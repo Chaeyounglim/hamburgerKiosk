@@ -3,17 +3,13 @@ package org.example;
 import java.util.Scanner;
 
 public class Food extends Menu{
-
-    private String name;
-    private double foodPrice;
-    private String content;
     private Menu menu;
 
     // 생성자 메서드
-    public Food(String name, double foodPrice, String content) {
+    public Food(String name, double price, String content) {
         super(name,content);
         this.name = name;
-        this.foodPrice = foodPrice;
+        this.price = price;
         this.content = content;
     }
 
@@ -22,8 +18,8 @@ public class Food extends Menu{
         return name;
     }
 
-    public double getFoodPrice() {
-        return foodPrice;
+    public double getPrice() {
+        return price;
     }
 
     public String getContent() {
@@ -45,14 +41,14 @@ public class Food extends Menu{
         for ( Food f : foods ) {
             if(f!=null) {
                 System.out.print(i++ + ". ");
-                System.out.printf("%-20s | W %-4.1f | %-50s\n", f.getName(),f.foodPrice,f.content);
+                System.out.printf("%-20s | W %-4.1f | %-50s\n", f.getName(),f.price,f.content);
             }
         }
     }
 
     // 장바구니에서 Food 상세 정보 출력
     public void printFood(Food f) {
-        System.out.printf("%-20s | W %-4.1f | %-50s\n", f.getName(),f.foodPrice,f.content);
+        System.out.printf("%-20s | W %-4.1f | %-50s\n", f.getName(),f.price,f.content);
     }
 
     // 상품 번호 선택

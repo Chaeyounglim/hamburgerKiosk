@@ -1,24 +1,24 @@
 package org.example;
 
 import java.util.Scanner;
-import java.util.Scanner;
 
 public class Main {
     static Order[] orderList = new Order[10];// 주문 10개 할 수 있도록 Order 타입의 변수 선언
     static int waitingOrderNumber = 0; // 주문 대기 번호
     public static void main(String[] args) throws InterruptedException {
         Scanner sc = new Scanner(System.in);
-        int start = 1; // 1:종료, 0:실행
 
-        Menu[] menus = new Menu[4];
+        //Menu[] menus = new Menu[4];
         Food[][] foods = new Food[4][5];
         Order order = new Order();
 
         // 메뉴 카테고리 설정
-        menus[0] = new Menu("Burgers", "앵거스 비프 통살을 다져만든 버거");
-        menus[1] = new Menu("Frozen Custard", "매장에서 신선하게 만드는 아이스크림");
-        menus[2] = new Menu("Drinks", "매장에서 직접 만드는 음료");
-        menus[3] = new Menu("Beer", "뉴욕 브루클린 브루어리에서 양조한 맥주");
+        Menu[] menus = {
+                new Menu("Burgers", "앵거스 비프 통살을 다져만든 버거"),
+                new Menu("Frozen Custard", "매장에서 신선하게 만드는 아이스크림"),
+                new Menu("Drinks", "매장에서 직접 만드는 음료"),
+                new Menu("Beer", "뉴욕 브루클린 브루어리에서 양조한 맥주")
+        };
         Menu menuList = new Menu(menus);
 
         // 메뉴별 카테고리에 따른 음식 메뉴 설정
@@ -47,14 +47,7 @@ public class Main {
         // 5. 음식 선택하기
         // 6. 음식 장바구니에 추가하기
         // 7. 메뉴로 다시 돌아가기
-        while(start==1) {
-            System.out.println("\n=============================================");
-            System.out.println("계속 실행하시겠습니까? (1 : 실행 , 0 : 종료) ");
-            start =sc.nextInt();
-            if(start==0){
-                break;
-            }
-
+        while(true) {
             int selectedMenuNum = -1; // 선택된 메뉴 카테고리 번호
             int orderOrMenuNum = -1; // 주문,주문 취소(5,6)인지 혹은 메뉴판인지(1,2,3,4)
             String selectedMenuName = ""; // 카테고리에 맞는 음식 출력할 때 매개변수로 넘겨줄 예정
@@ -78,9 +71,15 @@ public class Main {
                     break;
                 }
             } // inner whlie() of the end
-
+            System.out.println("\n=============================================");
+            System.out.println("계속 실행하시겠습니까? (1 : 실행 , 0 : 종료) ");
+            int start =sc.nextInt();
+            if(start==0){
+                break;
+            }else {
+                //구현없음.
+            }
         } // outer whlie() of the end
-
-
+        sc.close();
     }// main() of the end
 }

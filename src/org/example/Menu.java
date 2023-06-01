@@ -1,8 +1,11 @@
 package org.example;
 
+import java.util.Scanner;
+
 public class Menu {
-    private String name;
-    private String content;
+    public String name;
+    public String content;
+    public double price;
 
     public Menu[] menus;
 

@@ -105,7 +105,7 @@ public class Order {
                         System.out.println("취소된 주문");
                     }else {
                         f.printFood(f);
-                        sum += f.getFoodPrice();
+                        sum += f.getPrice();
                     }
                 }
                 System.out.println(" [ Total ] ");
@@ -171,7 +171,7 @@ public class Order {
             System.out.println(" [ Order ]  ");
             for (Food f : cartFoods) {
                 f.printFood(f);
-                sum += f.getFoodPrice();
+                sum += f.getPrice();
             }
             System.out.println("\n [ Total ] ");
             System.out.printf(" W %-4.1f\n\n", sum);
@@ -189,7 +189,7 @@ public class Order {
         boolean result = false;
 
         System.out.print("==================== 장바구니 추가 확인 페이지 =================");
-        System.out.printf("\n%-20s | %-4.1f | %-50s \n", selectedFood.getName(), selectedFood.getFoodPrice(), selectedFood.getContent());
+        System.out.printf("\n%-20s | %-4.1f | %-50s \n", selectedFood.getName(), selectedFood.getPrice(), selectedFood.getContent());
         System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
         System.out.printf("%-10s %-10s\n", "1. 확인", "2. 취소");
 

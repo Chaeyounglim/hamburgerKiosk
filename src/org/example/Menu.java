@@ -1,7 +1,5 @@
 package org.example;
 
-import java.util.Scanner;
-
 public class Menu {
     public String name;
     public String content;
@@ -10,6 +8,7 @@ public class Menu {
     public Menu[] menus;
 
     // 생성자 메서드
+    public Menu() {}
     public Menu(String name, String content) {
         this.name = name;
         this.content = content;
@@ -43,6 +42,7 @@ public class Menu {
     }
 
     // 메뉴 카테고리 선택하기
+    // 1번을 선택하면 0번 인덱스를 조회하기 위해 감소시킴.
     public int setSelectMenu(int menuNum) {
         menuNum--;
         return menuNum;

@@ -1,5 +1,6 @@
 package org.example;
 
+
 public class Menu {
     public String name;
     public String content;
@@ -42,7 +43,6 @@ public class Menu {
     }
 
     // 메뉴 카테고리 선택하기
-    // 1번을 선택하면 0번 인덱스를 조회하기 위해 감소시킴.
     public int setSelectMenu(int menuNum) {
         menuNum--;
         return menuNum;

@@ -67,7 +67,7 @@ public class Order {
         for (Food f : orderLists.get(this.orderCnt).orderFoods) {
             f.printFood(f);
         }
-        //addSaleFoods(orderLists.get(this.orderCnt).orderFoods);
+
         addSaleFoods(orderLists.get(this.orderCnt).orderFoods);
 
         System.out.println("주문이 완료되었습니다!");

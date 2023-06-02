@@ -52,6 +52,11 @@ public class Food extends Menu{
         System.out.printf("%-20s | W %-4.1f | %2d개 | %-50s\n", f.name,f.price,f.foodCnt,f.content);
     }
 
+    // 총 주문 내역 출력
+    public void printFood() {
+        System.out.printf("%-20s | W %-4.1f(per) | %2d개 | W %-4.1f(Total)\n", this.name,this.price,this.foodCnt,(this.price*this.foodCnt));
+    }
+
     // 해당 장바구니에 같은 음식이 있는지 Count하는 메서드
     public int setFoodCnt(Food selectedFood,List<Order> orderLists, int orderCnt,int cartFoodCnt) {
         int result = cartFoodCnt; // 같은 음식이 있을 경우에 count를 증가시킬 foodlist의 인덱스 번호 지정할 변수

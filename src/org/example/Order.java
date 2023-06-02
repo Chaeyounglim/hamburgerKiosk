@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 public class Order {
     public List<Food> cartFoods = new ArrayList<>();
     public List<Food> orderFoods = new ArrayList<>();
+    private List<Food> saleFoods = new ArrayList<>();
     public int cartFoodCnt = 0;
     public int orderCnt = 0;
 
@@ -32,9 +33,9 @@ public class Order {
                 if (orderResult == 1) { // 장바구니 정보 출력후 주문 (1)
                     this.takeOrder(orderLists);
                     break;
-                } else if(orderResult == 2){
+                } else if (orderResult == 2) {
                     break;
-                }else {
+                } else {
                     System.out.println("장바구니에 상품이 없습니다.");
                     break;
                 }
@@ -65,6 +66,7 @@ public class Order {
 
         for (Food f : orderLists.get(this.orderCnt).orderFoods) {
             f.printFood(f);
+            this.saleFoods.add(orderCnt, f); // 판매 상품 리스트
         }
         System.out.println("주문이 완료되었습니다!");
         orderLists.get(this.orderCnt).cartFoods.clear();
@@ -75,7 +77,6 @@ public class Order {
         System.out.println("(3초 후 초기화면으로 돌아갑니다.)");
         System.out.println("=============================================");
         TimeUnit.SECONDS.sleep(3);
-
     }
 
     // 주문 취소하기
@@ -108,7 +109,7 @@ public class Order {
             Order od = new Order();
             if (result > 0) { // 1번째 이상의 주문번호를 입력받으므로, 그외는 잘못 입력받은 경우임.
                 if (orderLists.get(result - 1) != od) {
-                    orderLists.set(result - 1,new Order());
+                    orderLists.set(result - 1, new Order());
                     System.out.println(result + "번째 주문이 취소되었습니다.");
                 } else {
                     System.out.println("해당 번호에 맞는 주문이 없습니다.");
@@ -159,7 +160,6 @@ public class Order {
         Scanner sc = new Scanner(System.in);
         boolean result = false;
 
-
         System.out.print("==================== 장바구니 추가 확인 페이지 =================");
         System.out.printf("\n%-20s | %-4.1f | %-50s \n", selectedFood.getName(), selectedFood.getPrice(), selectedFood.getContent());
         System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
@@ -168,10 +168,10 @@ public class Order {
         while (true) {
             int call = sc.nextInt();
             if (call == 1) { // 장바구니에 추가
-                if (this.addCart(selectedFood,orderLists)) { // 갯수를 추가한건지
+                if (this.addCart(selectedFood, orderLists)) { // 갯수를 추가한건지
                     result = true;
                     break;
-                }else { // 새로운 상품을 넣은건지
+                } else { // 새로운 상품을 넣은건지
                     result = true;
                     break;
                 }
@@ -189,19 +189,87 @@ public class Order {
     // 장바구니에 추가하기
     public boolean addCart(Food selectedFood, List<Order> orderLists) {
         orderLists.add(new Order());
-        int addcartFoodCnt = selectedFood.setFoodCnt(selectedFood, orderLists, this.orderCnt,this.cartFoodCnt);
+        int addcartFoodCnt = selectedFood.setFoodCnt(selectedFood, orderLists, this.orderCnt, this.cartFoodCnt);
         int cnt = selectedFood.foodCnt;
-        if(cnt==1){
-            orderLists.get(this.orderCnt).cartFoods.add(new Food(selectedFood.getName(),selectedFood.getPrice(),selectedFood.getContent()));
-        }else if(cnt>1) { // carFoods에 추가할 필요없이 cnt만 증가시키면 됨.
+        if (cnt == 1) {
+            orderLists.get(this.orderCnt).cartFoods.add(new Food(selectedFood.getName(), selectedFood.getPrice(), selectedFood.getContent()));
+        } else if (cnt > 1) { // carFoods에 추가할 필요없이 cnt만 증가시키면 됨.
             orderLists.get(this.orderCnt).cartFoods.get(addcartFoodCnt).foodCnt++;
         }
 
         orderLists.get(this.orderCnt).cartFoodCnt++;
-        System.out.println(orderLists.get(this.orderCnt).cartFoodCnt);
         System.out.println();
         System.out.println(selectedFood.getName() + "가 장바구니에 추가되었습니다.");
         System.out.println("장바구니에 총 " + orderLists.get(this.orderCnt).cartFoodCnt + "개의 상품이 담겨있습니다.");
+        System.out.println("=============================================\n");
         return true;
+    }
+
+
+    // 관리자 페이지 : 총 판매금액 조회 , 총 판매상품 목록
+    public void adminPage() {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("=============================================");
+            System.out.println("관리자 페이지\n");
+            System.out.println("1. 총 판매 금액 현황 ");
+            System.out.println("2. 총 판매상품 목록 현황 ");
+            System.out.println("\n원하는 조회 항목 번호 입력 : ");
+
+            int adminIndex = sc.nextInt();
+            int goToMenu = 0;
+            if (adminIndex == 1) { // 총 판매 금액
+                goToMenu = this.printSalePrice();
+                if (goToMenu==1) {
+                    break;
+                }
+            } else if (adminIndex == 2) { // 판매 상품 목록과 가격
+                goToMenu = this.printSaleFoods();
+                if (goToMenu==1) {
+                    break;
+                }
+            } else {
+                System.out.println("알맞은 항목 번호를 입력해주세요. ");
+                System.out.println("=============================================");
+                continue;
+            }
+        }// while() of the End
+    }
+
+    // 판매한 상품 목록 출력
+    private int printSaleFoods() {
+        Scanner sc = new Scanner(System.in);
+
+        int goMenu = 0; //1일 경우 메뉴로
+
+        System.out.println("=============================================");
+        System.out.println("\n[ 총 판매상품 목록 현황 ]");
+        for(Food sf : this.saleFoods){
+            System.out.print("- ");
+            sf.printFood();
+        }
+        System.out.println("\n1. 돌아가기");
+        goMenu = sc.nextInt();
+        return goMenu;
+    }
+
+    // 판매한 상품의 금액 합 출력
+    private int printSalePrice() {
+        Scanner sc = new Scanner(System.in);
+        int goMenu = 0; //1일 경우 메뉴로
+        double salesTotal = 0.0; // 총 판매금액
+
+        for(Food sf : this.saleFoods){
+            salesTotal += (sf.getFoodCnt()*sf.getPrice());
+        }
+
+        System.out.println("=============================================");
+        System.out.println("\n[ 총 판매금액 현황 ]");
+        System.out.printf("현재까지 총 판매된 금액은 [ W %.1f ] 입니다.\n\n", salesTotal);
+
+        System.out.println("1. 돌아가기");
+        goMenu = sc.nextInt();
+        return goMenu;
     }
 }

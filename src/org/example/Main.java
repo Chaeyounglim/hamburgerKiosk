@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 public class Main {
     public List<Order> orderLists = new ArrayList<>(); // 주문을 여러개 받기 위한 list
-    static int waitingOrderNumber = 0; // 주문 대기 번호
 
     public static void main(String[] args) throws InterruptedException {
         Scanner sc = new Scanner(System.in);
@@ -50,7 +49,7 @@ public class Main {
         // 5. 음식 선택하기
         // 6. 음식 장바구니에 추가하기
         // 7. 메뉴로 다시 돌아가기
-        while(true) {
+        while (true) {
             int selectedMenuNum = -1; // 선택된 메뉴 카테고리 번호
             int orderOrMenuNum = -1; // 주문,주문 취소(5,6)인지 혹은 메뉴판인지(1,2,3,4)
             String selectedMenuName = ""; // 카테고리에 맞는 음식 출력할 때 매개변수로 넘겨줄 예정
@@ -58,33 +57,39 @@ public class Main {
 
             menuList.printMenu(); // 첫 메뉴판 출력
             orderOrMenuNum = order.orderMenuPrint(main.orderLists); // 주문 혹은 주문 취소 (5,6번 입력시)
-            while (orderOrMenuNum <= 4 && orderOrMenuNum > 0) { // 메뉴 선택 시 실행 (1-4번 입력시)
+            if (orderOrMenuNum <= menuList.menus.length && orderOrMenuNum >= 0) { // 메뉴 선택과 관리자 페이지 실행 (0-4번 입력시)
+                if (orderOrMenuNum == 0) {// 관리자 페이지
+                    order.adminPage();
+                    // 총 판매금액 조회 기능
+                    // 총 판매상품 목록 조회
 
-                selectedMenuNum = menuList.setSelectMenu(orderOrMenuNum);
+                } else { // 1~4번 선택할 경우
+                    selectedMenuNum = menuList.setSelectMenu(orderOrMenuNum);
 
-                // selectedMenu에 해당하는 메뉴판 출력
-                selectedMenuName = menuList.getMenus()[selectedMenuNum].getName();
-                Food.printFood(selectedMenuNum, selectedMenuName, foods[selectedMenuNum]);
+                    // selectedMenu에 해당하는 메뉴판 출력
+                    selectedMenuName = menuList.getMenus()[selectedMenuNum].getName();
+                    Food.printFood(selectedMenuNum, selectedMenuName, foods[selectedMenuNum]);
 
-                // 음식 선택하기
-                int selectedFoodNum = Food.selectFood();
-                selectedFood = foods[selectedMenuNum][selectedFoodNum];
+                    // 음식 선택하기
+                    int selectedFoodNum = Food.selectFood();
+                    selectedFood = foods[selectedMenuNum][selectedFoodNum];
 
-                // 장바구니 추가 확인
-                selectedFood.foodCnt = 1;
-                if (order.checkCart(selectedFood,main.orderLists)) {
-                    break;
-                }
-            } // inner whlie() of the end
+                    // 장바구니 추가 확인
+                    selectedFood.foodCnt = 1;
+                    if (order.checkCart(selectedFood, main.orderLists)) {
+                        continue;
+                    }
+                } // else() of the end
+            }// if() of the end
             System.out.println("\n=============================================");
             System.out.println("계속 실행하시겠습니까? (1 : 실행 , 0 : 종료) ");
-            int start =sc.nextInt();
-            if(start==0){
+            int start = sc.nextInt();
+            if (start == 0) {
                 break;
-            }else {
+            } else {
                 //구현없음.
             }
-        } // outer whlie() of the end
+        } // whlie() of the end
         sc.close();
     }// main() of the end
 }// main class of the end
